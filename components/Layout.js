@@ -3,7 +3,7 @@ import styled from "styled-components";
 const Layout = ({ children }) => {
   return (
     <>
-      <StyledHeading>Navigation</StyledHeading>
+      <StyledHeading>Header</StyledHeading>
       {children}
       <footer>
         <img src="/Download.png" alt="footer" />
