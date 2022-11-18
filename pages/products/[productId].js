@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { get } from "mongoose";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
@@ -10,7 +11,10 @@ const ProductDetail = () => {
   useEffect(() => {
     const getProduct = async () => {
       try {
-        const response = await fetch(`/api/products/${productId}`);
+        const response = await fetch(`/api/products/${productId}`, {
+          method: "GET",
+        });
+        console.log(response);
         if (response.ok) {
           const data = await response.json();
           setProduct(data);

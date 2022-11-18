@@ -6,7 +6,7 @@ const Layout = ({ children }) => {
       <StyledHeading>Navigation</StyledHeading>
       {children}
       <footer>
-        <p>Footer</p>
+        <img src="/Download.png" alt="footer" />
       </footer>
     </>
   );

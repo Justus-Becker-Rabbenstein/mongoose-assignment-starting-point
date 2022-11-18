@@ -4,6 +4,7 @@ import styles from "../../styles/ProductDashboard.module.css";
 import { useState, useEffect } from "react";
 
 const Products = () => {
+  // https://nextjs.org/docs/guides/building-forms
   const [products, setProducts] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState(null); //"Food", "Technology"
 
@@ -30,6 +31,23 @@ const Products = () => {
     getProducts();
   }, [categoryFilter]);
 
+  const deleteItem = async (productId) => {
+    try {
+      const response = await fetch(`/api/products/${productId}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        alert("Deletion successful.");
+        window.location.reload();
+      } else {
+        throw new Error(`Fetch failed with status code ${response.status}`);
+      }
+    } catch (error) {
+      alert("Delete item failed. " + error);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -39,6 +57,7 @@ const Products = () => {
       </Head>
       <div>
         <h1 className="test">Products Dashboard</h1>
+        <h2>Currently stored Products</h2>
         <select
           onChange={(event) => {
             if (event.target.value === "all") {
@@ -56,13 +75,45 @@ const Products = () => {
         <ul className={styles["product-list"]}>
           {products.map((product) => {
             return (
-              <li key={product._id}>
-                <Link href={`/products/${product._id}`}>{product.name}</Link>
-              </li>
+              <>
+                <li key={product._id}>
+                  <Link href={`/products/${product._id}`}>{product.name}</Link>
+                  <button onClick={() => deleteItem(product._id)}>
+                    Delete Item
+                  </button>
+                </li>
+              </>
             );
           })}
         </ul>
       </div>
+      <h2>Add a new product</h2>
+      <form action="/api/index.js" method="POST">
+        <ul>
+          <li>
+            <label for="input-Name">Name: </label>
+            <input id="input-Name" name="fieldName" />
+          </li>
+          <li>
+            <label for="input-Category">Category: </label>
+            <input id="input-Category" name="fieldCategory" />
+          </li>
+          <li>
+            <label for="input-Detail">Detail: </label>
+            <input id="input-Detail" name="fieldDetail" />
+          </li>
+          <li>
+            <button
+              onClick={function (event) {
+                event.preventDefault();
+                console.log(event.target.elements.input - Name.value);
+              }}
+            >
+              Save Product
+            </button>
+          </li>
+        </ul>
+      </form>
     </>
   );
 };
