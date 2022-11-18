@@ -48,6 +48,38 @@ const Products = () => {
     }
   };
 
+  const handleNewEntry = async (event) => {
+    const data = {
+      name: event.target.name.value,
+      category: event.target.category.value,
+      detail: event.target.detail.value,
+    };
+
+    // Send the data to the server in JSON format.
+    const JSONdata = JSON.stringify(data);
+
+    // API endpoint where we send form data.
+    const endpoint = "/api/products";
+
+    // Form the request for sending data to the server.
+    const options = {
+      // The method is POST because we are sending data.
+      method: "POST",
+      // Tell the server we're sending JSON.
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // Body of the request is the JSON data we created above.
+      body: JSONdata,
+    };
+    // Send the form data to our forms API on Vercel and get a response.
+    const response = await fetch(endpoint, options);
+
+    // Get the response data from server as JSON.
+    // If server returns the name submitted, that means the form works.
+    const result = await response.json();
+  };
+
   return (
     <>
       <Head>
@@ -88,29 +120,22 @@ const Products = () => {
         </ul>
       </div>
       <h2>Add a new product</h2>
-      <form action="/api/index.js" method="POST">
+      <form onSubmit={handleNewEntry}>
         <ul>
           <li>
-            <label for="input-Name">Name: </label>
-            <input id="input-Name" name="fieldName" />
+            <label htmlFor="name">Name: </label>
+            <input type="text" id="name" name="name" />
           </li>
           <li>
-            <label for="input-Category">Category: </label>
-            <input id="input-Category" name="fieldCategory" />
+            <label htmlFor="category">Category: </label>
+            <input type="text" id="category" name="category" />
           </li>
           <li>
-            <label for="input-Detail">Detail: </label>
-            <input id="input-Detail" name="fieldDetail" />
+            <label htmlFor="detail">Detail: </label>
+            <input id="detail" name="detail" />
           </li>
           <li>
-            <button
-              onClick={function (event) {
-                event.preventDefault();
-                console.log(event.target.elements.input - Name.value);
-              }}
-            >
-              Save Product
-            </button>
+            <button type="submit">Save Product</button>
           </li>
         </ul>
       </form>
